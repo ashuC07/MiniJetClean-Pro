@@ -31,4 +31,38 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.boxShadow = 'none';
         }
     });
+
+    // Carousel Logic
+    const track = document.querySelector('.carousel-track');
+    const slides = Array.from(track.children);
+    const nextButton = document.querySelector('.next-btn');
+    const prevButton = document.querySelector('.prev-btn');
+    const indicators = Array.from(document.querySelectorAll('.indicator'));
+
+    let currentSlideIndex = 0;
+
+    const updateCarousel = (index) => {
+        track.style.transform = `translateX(-${index * 50}%)`;
+
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        currentSlideIndex = index;
+    };
+
+    nextButton.addEventListener('click', () => {
+        const nextIndex = currentSlideIndex === slides.length - 1 ? 0 : currentSlideIndex + 1;
+        updateCarousel(nextIndex);
+    });
+
+    prevButton.addEventListener('click', () => {
+        const prevIndex = currentSlideIndex === 0 ? slides.length - 1 : currentSlideIndex - 1;
+        updateCarousel(prevIndex);
+    });
+
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => updateCarousel(index));
+    });
 });
